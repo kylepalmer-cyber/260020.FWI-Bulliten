@@ -16,6 +16,7 @@
       --teal: #1e6266;
       --teal-dark: #123f43;
       --gold: #d9a441;
+      --green: #2e6b3d;
       --red: #a33d32;
       --shadow: 0 16px 38px rgba(18, 63, 67, 0.12);
     }
@@ -181,10 +182,25 @@
       border-color: var(--red);
     }
 
+    button:disabled {
+      opacity: 0.62;
+      cursor: not-allowed;
+    }
+
     .status {
       min-height: 24px;
       color: var(--muted);
       font-size: 0.94rem;
+    }
+
+    .status.success {
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    .status.error {
+      color: var(--red);
+      font-weight: 700;
     }
 
     .editor-section {
@@ -295,8 +311,7 @@
     }
 
     .preview {
-      position: sticky;
-      top: 14px;
+      align-self: start;
     }
 
     .preview-box {
@@ -330,6 +345,12 @@
       font-family: Consolas, "Courier New", monospace;
       font-size: 0.86rem;
       white-space: pre;
+    }
+
+    .publish-fields {
+      display: grid;
+      gap: 10px;
+      margin: 12px 0;
     }
 
     .note {
@@ -433,7 +454,7 @@
     <div class="wrap header-inner">
       <p class="eyebrow">Private helper page</p>
       <h1>Falcon Way Bulletin Editor</h1>
-      <p class="lede">Use this page to edit the bulletin as a form. It prepares the replacement CSV; GitHub still handles sign-in and publishing.</p>
+      <p class="lede">Use this page to edit the bulletin as a form. It can prepare the replacement CSV or publish it with a GitHub token.</p>
     </div>
   </header>
 
@@ -456,12 +477,12 @@
     <div class="stack">
       <section class="panel">
         <h2>How Publishing Works</h2>
-        <p>This editor does not store a GitHub token and does not publish by itself. That keeps the public web page from becoming a credential risk.</p>
+        <p>This editor can publish directly when an authorized GitHub token is pasted in. The token is used only for that click and is not saved by this page.</p>
         <ol class="steps">
           <li>Edit the fields below.</li>
-          <li>Copy or download the generated CSV.</li>
-          <li>Open GitHub's editor for content.csv.</li>
-          <li>Paste, commit, and wait for Pages to update.</li>
+          <li>Paste the publish token.</li>
+          <li>Click Publish to GitHub.</li>
+          <li>Wait briefly for Pages to update.</li>
         </ol>
       </section>
 
@@ -489,8 +510,20 @@
       </section>
 
       <section class="panel">
-        <h2>Publish</h2>
-        <p>Copy this generated CSV into GitHub's content.csv editor.</p>
+        <h2>Publish to GitHub</h2>
+        <p>Paste a GitHub token with write access to this repo, then publish the generated CSV.</p>
+        <div class="publish-fields">
+          <label>
+            GitHub publish token
+            <input id="github-token" type="password" autocomplete="off" spellcheck="false" placeholder="Paste token when ready to publish">
+          </label>
+          <label>
+            Commit note
+            <input id="commit-message" type="text" value="Update bulletin content" maxlength="120">
+          </label>
+          <button type="button" id="publish-button">Publish to GitHub</button>
+          <p class="status" id="publish-status" role="status" aria-live="polite"></p>
+        </div>
         <div class="toolbar-actions">
           <a class="button-link" target="_blank" rel="noopener" href="https://github.com/kylepalmer-cyber/260020.FWI-Bulliten/edit/main/content.csv">Open GitHub editor</a>
           <a class="button-link secondary" target="_blank" rel="noopener" href="./">Open public bulletin</a>
@@ -500,7 +533,7 @@
 
       <div class="note">
         <strong>Access note</strong>
-        <p>This editor URL is public if someone knows it. The protection is that only signed-in GitHub users with repo write access can commit the generated CSV.</p>
+        <p>The PIN hides the editor from casual viewers. The GitHub token is what allows this page to write to content.csv.</p>
       </div>
     </aside>
   </main>
@@ -509,6 +542,8 @@
     (() => {
       const CONTENT_URL = "content.csv";
       const GITHUB_EDIT_URL = "https://github.com/kylepalmer-cyber/260020.FWI-Bulliten/edit/main/content.csv";
+      const GITHUB_API_URL = "https://api.github.com/repos/kylepalmer-cyber/260020.FWI-Bulliten/contents/content.csv";
+      const GITHUB_BRANCH = "main";
       const PIN_HASH = "8a6c6eaff6c1a4472ab71214fbcb817477c854435fbf502a7e3d3eb989dee693";
       const HEADERS = ["section", "order", "label", "date", "heading", "body", "button_label", "button_url", "visible"];
       const SECTION_ORDER = ["hero", "meta", "status", "update", "overview", "expect", "contact", "note"];
@@ -541,6 +576,10 @@
       const preview = document.querySelector("#preview-root");
       const output = document.querySelector("#csv-output");
       const status = document.querySelector("#status-message");
+      const publishButton = document.querySelector("#publish-button");
+      const publishStatus = document.querySelector("#publish-status");
+      const githubToken = document.querySelector("#github-token");
+      const commitMessage = document.querySelector("#commit-message");
       const lockScreen = document.querySelector("#lock-screen");
       const editorMain = document.querySelector("#editor-main");
       const pinForm = document.querySelector("#pin-form");
@@ -778,6 +817,92 @@
         renderPreview();
       }
 
+      function setPublishStatus(message, type = "") {
+        publishStatus.className = type ? `status ${type}` : "status";
+        publishStatus.textContent = message;
+      }
+
+      function toBase64(value) {
+        const bytes = new TextEncoder().encode(value);
+        const chunkSize = 0x8000;
+        let binary = "";
+        for (let index = 0; index < bytes.length; index += chunkSize) {
+          binary += String.fromCharCode(...bytes.subarray(index, index + chunkSize));
+        }
+        return btoa(binary);
+      }
+
+      async function githubError(response, fallback) {
+        try {
+          const payload = await response.json();
+          const details = Array.isArray(payload.errors)
+            ? payload.errors.map((error) => error.message || error.code).filter(Boolean).join(" ")
+            : "";
+          return new Error(`${fallback}: ${payload.message || response.statusText}${details ? ` ${details}` : ""}`);
+        } catch {
+          return new Error(`${fallback}: ${response.status} ${response.statusText}`);
+        }
+      }
+
+      function githubHeaders(token) {
+        return {
+          Accept: "application/vnd.github+json",
+          Authorization: `Bearer ${token}`,
+          "X-GitHub-Api-Version": "2022-11-28"
+        };
+      }
+
+      async function getCurrentContentSha(token) {
+        const response = await fetch(GITHUB_API_URL, {
+          headers: githubHeaders(token),
+          cache: "no-store"
+        });
+        if (!response.ok) throw await githubError(response, "Could not read current content.csv from GitHub");
+        const payload = await response.json();
+        if (!payload.sha) throw new Error("GitHub response did not include the current content.csv version.");
+        return payload.sha;
+      }
+
+      async function publishToGithub() {
+        const token = clean(githubToken.value);
+        if (!token) {
+          setPublishStatus("Paste the GitHub publish token first.", "error");
+          githubToken.focus();
+          return;
+        }
+
+        const message = clean(commitMessage.value) || "Update bulletin content";
+        const csv = recordsToCsv(records);
+        publishButton.disabled = true;
+        setPublishStatus("Checking the current GitHub file...");
+
+        try {
+          const sha = await getCurrentContentSha(token);
+          setPublishStatus("Publishing content.csv to GitHub...");
+          const response = await fetch(GITHUB_API_URL, {
+            method: "PUT",
+            headers: {
+              ...githubHeaders(token),
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              branch: GITHUB_BRANCH,
+              message,
+              content: toBase64(csv),
+              sha
+            })
+          });
+          if (!response.ok) throw await githubError(response, "GitHub did not accept the update");
+          setPublishStatus("Published. GitHub Pages should update in a minute or two.", "success");
+          status.textContent = "Published content.csv to GitHub.";
+        } catch (error) {
+          setPublishStatus(error.message || "Publish failed.", "error");
+          console.warn(error);
+        } finally {
+          publishButton.disabled = false;
+        }
+      }
+
       function renderAll(message) {
         renderEditor();
         syncOutputs();
@@ -854,6 +979,7 @@
       document.querySelector("#reload-button").addEventListener("click", loadContent);
       document.querySelector("#copy-button").addEventListener("click", copyCsv);
       document.querySelector("#download-button").addEventListener("click", downloadCsv);
+      publishButton.addEventListener("click", publishToGithub);
       pinForm.addEventListener("submit", checkPin);
       document.querySelector(`a[href='${GITHUB_EDIT_URL}']`)?.addEventListener("click", () => {
         status.textContent = "GitHub editor opened. Paste the generated CSV into content.csv and commit.";

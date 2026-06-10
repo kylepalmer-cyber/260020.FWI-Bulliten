@@ -10,11 +10,24 @@ The easiest non-coder path is to use the helper editor:
 
 1. Open `https://kylepalmer-cyber.github.io/260020.FWI-Bulliten/editor.html`.
 2. Edit the rows in the form.
-3. Click `Copy CSV`.
-4. Click `Open GitHub editor`.
-5. Select all text in GitHub's `content.csv` editor, paste the copied CSV, and commit.
+3. Paste the GitHub publish token.
+4. Click `Publish to GitHub`.
+5. Wait a minute or two for GitHub Pages to refresh.
 
-The editor page does not save GitHub credentials or publish directly. GitHub's own sign-in and repo permissions control who can commit updates.
+The editor page does not save the token. It uses the token only when `Publish to GitHub` is clicked.
+
+The token should be a GitHub fine-grained personal access token with these settings:
+
+- Owner: `kylepalmer-cyber`
+- Repository access: only `260020.FWI-Bulliten`
+- Repository permissions: `Contents` set to `Read and write`
+- Expiration: short, such as 30 or 90 days
+
+If direct publishing fails, use the fallback buttons:
+
+1. Click `Copy CSV`.
+2. Click `Open GitHub editor`.
+3. Select all text in GitHub's `content.csv` editor, paste the copied CSV, and commit.
 
 Columns:
 
