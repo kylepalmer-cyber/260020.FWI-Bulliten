@@ -510,7 +510,6 @@
       const CONTENT_URL = "content.csv";
       const GITHUB_EDIT_URL = "https://github.com/kylepalmer-cyber/260020.FWI-Bulliten/edit/main/content.csv";
       const PIN_HASH = "8a6c6eaff6c1a4472ab71214fbcb817477c854435fbf502a7e3d3eb989dee693";
-      const PIN_SESSION_KEY = "falcon-way-editor-unlocked";
       const HEADERS = ["section", "order", "label", "date", "heading", "body", "button_label", "button_url", "visible"];
       const SECTION_ORDER = ["hero", "meta", "status", "update", "overview", "expect", "contact", "note"];
       const SECTION_COPY = {
@@ -823,7 +822,6 @@
         if (!attempt) return;
         const attemptHash = await sha256(attempt);
         if (attemptHash === PIN_HASH) {
-          sessionStorage.setItem(PIN_SESSION_KEY, "yes");
           unlockEditor({ scroll: true });
         } else {
           pinInput.value = "";
@@ -861,11 +859,7 @@
         status.textContent = "GitHub editor opened. Paste the generated CSV into content.csv and commit.";
       });
 
-      if (sessionStorage.getItem(PIN_SESSION_KEY) === "yes") {
-        unlockEditor();
-      } else {
-        pinInput.focus();
-      }
+      pinInput.focus();
     })();
   </script>
 </body>
