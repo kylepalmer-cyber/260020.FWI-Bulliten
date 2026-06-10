@@ -3,24 +3,31 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Falcon Way Improvements People's FAQ Bulletin</title>
-  <meta name="description" content="Public FAQ bulletin for Falcon Way Improvements updates, access notes, schedule information, and community questions.">
+  <title>Falcon Way Improvements Bulletin</title>
+  <meta name="description" content="Mobile-friendly public bulletin for Falcon Way Improvements project updates, contact information, and what to expect.">
   <style>
     :root {
       color-scheme: light;
-      --ink: #1f2933;
-      --muted: #52616f;
-      --line: #d8dee4;
-      --paper: #f7f5ef;
+      --ink: #20252b;
+      --muted: #59636f;
+      --soft: #eef3f2;
+      --paper: #faf8f2;
       --panel: #ffffff;
-      --accent: #25636a;
-      --accent-strong: #164b52;
-      --notice: #fff4d6;
-      --notice-line: #e7bf54;
+      --line: #d8dedc;
+      --teal: #1e6266;
+      --teal-dark: #123f43;
+      --gold: #d9a441;
+      --green: #4f7f59;
+      --red: #9b3d32;
+      --shadow: 0 18px 45px rgba(18, 63, 67, 0.12);
     }
 
     * {
       box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
@@ -29,272 +36,629 @@
       background: var(--paper);
       font-family: Arial, Helvetica, sans-serif;
       line-height: 1.55;
+      padding-bottom: 76px;
     }
 
-    .topbar {
-      background: var(--accent-strong);
-      color: #fff;
-      border-bottom: 5px solid #d9a441;
+    a {
+      color: inherit;
     }
 
-    .topbar-inner,
-    main,
-    footer {
-      width: min(1060px, calc(100% - 32px));
+    .page-wrap {
+      width: min(1080px, calc(100% - 32px));
       margin: 0 auto;
     }
 
-    .topbar-inner {
-      padding: 26px 0 24px;
+    .hero {
+      position: relative;
+      overflow: hidden;
+      color: #fff;
+      background:
+        linear-gradient(135deg, rgba(18, 63, 67, 0.98), rgba(30, 98, 102, 0.9)),
+        repeating-linear-gradient(45deg, transparent 0 18px, rgba(255, 255, 255, 0.08) 18px 20px);
+      border-bottom: 6px solid var(--gold);
     }
 
-    .label {
-      margin: 0 0 8px;
+    .hero::after {
+      position: absolute;
+      right: -90px;
+      bottom: -160px;
+      width: 360px;
+      height: 360px;
+      content: "";
+      background: rgba(217, 164, 65, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 50%;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      padding: 30px 0 28px;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
       font-size: 0.78rem;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      opacity: 0.88;
+      color: #f2d789;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
     }
 
     h1 {
-      margin: 0;
-      max-width: 780px;
-      font-size: clamp(2rem, 5vw, 4rem);
-      line-height: 1.02;
+      max-width: 760px;
+      margin-bottom: 14px;
+      font-size: clamp(2.15rem, 9vw, 4.35rem);
+      line-height: 0.98;
       letter-spacing: 0;
     }
 
-    .subtitle {
-      max-width: 760px;
-      margin: 18px 0 0;
-      font-size: 1.1rem;
-      color: #e8f3f4;
+    .lede {
+      max-width: 720px;
+      margin-bottom: 20px;
+      color: #e7f0ef;
+      font-size: 1.08rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .button {
+      display: inline-flex;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
+      padding: 11px 14px;
+      color: #fff;
+      background: var(--teal-dark);
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: 6px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .button.primary {
+      color: var(--teal-dark);
+      background: #fff;
+      border-color: #fff;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .summary-card {
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 6px;
+    }
+
+    .summary-card span {
+      display: block;
+      margin-bottom: 4px;
+      color: #f2d789;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .summary-card strong {
+      display: block;
+      color: #fff;
+      font-size: 1.02rem;
+      line-height: 1.25;
     }
 
     main {
-      padding: 28px 0 42px;
+      padding: 28px 0 46px;
     }
 
-    .notice {
-      margin: 0 0 24px;
-      padding: 16px 18px;
-      background: var(--notice);
-      border: 1px solid var(--notice-line);
-      border-left-width: 6px;
-    }
-
-    .notice strong {
-      display: block;
-      margin-bottom: 4px;
-    }
-
-    .grid {
+    .content-grid {
       display: grid;
-      grid-template-columns: minmax(0, 2fr) minmax(280px, 0.9fr);
+      grid-template-columns: minmax(0, 1.55fr) minmax(300px, 0.85fr);
       gap: 22px;
       align-items: start;
     }
 
-    section,
-    aside {
+    .stack {
+      display: grid;
+      gap: 22px;
+    }
+
+    .section {
+      padding: 22px;
       background: var(--panel);
       border: 1px solid var(--line);
-      border-radius: 6px;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
     }
 
-    section {
-      padding: 10px 22px 4px;
+    .section.flush {
+      box-shadow: none;
     }
 
-    aside {
-      padding: 20px;
+    .section-title {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 16px;
     }
 
-    h2 {
-      margin: 16px 0 10px;
-      font-size: 1.45rem;
-      line-height: 1.2;
-    }
-
-    h3 {
-      margin: 20px 0 8px;
-      font-size: 1.04rem;
-      line-height: 1.3;
-      color: var(--accent-strong);
-    }
-
-    p {
-      margin: 0 0 14px;
-    }
-
-    .faq-item {
-      padding: 16px 0 14px;
-      border-top: 1px solid var(--line);
-    }
-
-    .faq-item:first-of-type {
-      border-top: 0;
-    }
-
-    .faq-item p:last-child {
+    .section-title h2 {
       margin-bottom: 0;
+      font-size: 1.45rem;
+      line-height: 1.18;
     }
 
-    .status-list,
-    .contact-list {
+    .section-title p {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .date-pill {
+      flex: 0 0 auto;
+      padding: 6px 9px;
+      color: var(--teal-dark);
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .update-list {
       display: grid;
       gap: 12px;
-      margin: 14px 0 0;
+      margin: 0;
       padding: 0;
       list-style: none;
     }
 
-    .status-list li,
-    .contact-list li {
-      padding: 12px;
-      background: #f3f7f7;
-      border: 1px solid #d6e3e5;
+    .update-item {
+      display: grid;
+      grid-template-columns: 84px minmax(0, 1fr);
+      gap: 14px;
+      padding: 14px 0 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .update-item:first-child {
+      padding-top: 0;
+      border-top: 0;
+    }
+
+    .update-date {
+      color: var(--green);
+      font-size: 0.88rem;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    .update-item h3 {
+      margin-bottom: 5px;
+      font-size: 1.04rem;
+      line-height: 1.26;
+      color: var(--teal-dark);
+    }
+
+    .update-item p,
+    .info-row p,
+    .contact-card p,
+    .note p {
+      margin-bottom: 0;
+      color: var(--muted);
+    }
+
+    .info-list {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .info-row {
+      padding: 14px;
+      background: #f7faf9;
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--teal);
       border-radius: 6px;
     }
 
-    .status-list strong,
-    .contact-list strong {
-      display: block;
-      margin-bottom: 2px;
-      color: var(--accent-strong);
+    .info-row h3 {
+      margin-bottom: 5px;
+      color: var(--teal-dark);
+      font-size: 1rem;
     }
 
-    .small {
+    .timeline {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: step;
+    }
+
+    .timeline li {
+      position: relative;
+      padding-left: 42px;
+      min-height: 34px;
+    }
+
+    .timeline li::before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: grid;
+      width: 28px;
+      height: 28px;
+      place-items: center;
+      color: #fff;
+      background: var(--teal);
+      border-radius: 50%;
+      content: counter(step);
+      counter-increment: step;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .timeline h3 {
+      margin-bottom: 3px;
+      font-size: 1rem;
+      color: var(--teal-dark);
+    }
+
+    .timeline p {
+      margin-bottom: 0;
+      color: var(--muted);
+    }
+
+    .contact-stack {
+      display: grid;
+      gap: 14px;
+    }
+
+    .contact-card {
+      padding: 16px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .contact-card.urgent {
+      border-left: 5px solid var(--red);
+    }
+
+    .contact-card h3 {
+      margin-bottom: 6px;
+      color: var(--teal-dark);
+      font-size: 1.08rem;
+    }
+
+    .contact-link {
+      display: block;
+      margin-top: 10px;
+      padding: 12px;
+      color: var(--teal-dark);
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      font-weight: 700;
+      text-decoration: none;
+      word-break: break-word;
+    }
+
+    .placeholder {
+      color: #6d4f00;
+      background: #fff4d2;
+      border-color: #e7c469;
+    }
+
+    .note {
+      padding: 16px;
+      background: #fff9e8;
+      border: 1px solid #e7c469;
+      border-left: 5px solid var(--gold);
+      border-radius: 8px;
+    }
+
+    .note strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #6d4f00;
+    }
+
+    .sticky-contact {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 10;
+      padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+      background: rgba(250, 248, 242, 0.96);
+      border-top: 1px solid var(--line);
+      box-shadow: 0 -10px 30px rgba(18, 63, 67, 0.12);
+      backdrop-filter: blur(10px);
+    }
+
+    .sticky-contact-inner {
+      display: flex;
+      width: min(1080px, 100%);
+      margin: 0 auto;
+      gap: 10px;
+    }
+
+    .sticky-contact a {
+      flex: 1 1 0;
+      min-height: 46px;
+      padding: 12px;
+      color: #fff;
+      background: var(--teal-dark);
+      border-radius: 6px;
+      font-weight: 700;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .sticky-contact a:first-child {
+      color: var(--teal-dark);
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+
+    footer {
+      width: min(1080px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 0 0 28px;
       color: var(--muted);
       font-size: 0.92rem;
     }
 
-    .update-date {
-      display: inline-block;
-      margin-top: 16px;
-      padding: 7px 10px;
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.28);
-      border-radius: 999px;
-      font-size: 0.88rem;
-      color: #fff;
-    }
-
-    footer {
-      padding: 0 0 34px;
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
     footer p {
-      border-top: 1px solid var(--line);
+      margin: 0;
       padding-top: 18px;
+      border-top: 1px solid var(--line);
     }
 
-    a {
-      color: var(--accent-strong);
-      font-weight: 700;
-    }
-
-    @media (max-width: 780px) {
-      .grid {
+    @media (max-width: 860px) {
+      .summary-grid,
+      .content-grid {
         grid-template-columns: 1fr;
       }
 
-      section,
-      aside {
-        padding-left: 16px;
-        padding-right: 16px;
+      .hero-inner {
+        padding-top: 24px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      body {
+        padding-bottom: 86px;
+      }
+
+      .page-wrap {
+        width: min(100% - 24px, 1080px);
+      }
+
+      .hero-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .summary-grid {
+        gap: 10px;
+      }
+
+      .section {
+        padding: 18px;
+        border-radius: 6px;
+      }
+
+      .section-title {
+        display: block;
+      }
+
+      .date-pill {
+        display: inline-block;
+        margin-top: 12px;
+      }
+
+      .update-item {
+        grid-template-columns: 1fr;
+        gap: 4px;
+      }
+
+      .update-date {
+        font-size: 0.82rem;
+      }
+
+      .sticky-contact-inner {
+        gap: 8px;
       }
     }
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="topbar-inner">
-      <p class="label">Public FAQ Bulletin</p>
-      <h1>Falcon Way Improvements People's FAQ Bulletin</h1>
-      <p class="subtitle">A plain-language update page for neighbors, road users, local businesses, and anyone tracking the Falcon Way improvements.</p>
-      <span class="update-date">Last updated: June 9, 2026</span>
+  <header class="hero">
+    <div class="page-wrap hero-inner">
+      <p class="eyebrow">Project bulletin</p>
+      <h1>Falcon Way Improvements</h1>
+      <p class="lede">A quick public update page for people checking the project from a phone. Find the latest status, what to expect near the work area, and where to send questions.</p>
+      <div class="hero-actions" aria-label="Page shortcuts">
+        <a class="button primary" href="#updates">Recent updates</a>
+        <a class="button" href="#contact">Who to contact</a>
+      </div>
+      <div class="summary-grid" aria-label="Project summary">
+        <div class="summary-card">
+          <span>Status</span>
+          <strong>Public information page is live</strong>
+        </div>
+        <div class="summary-card">
+          <span>Updated</span>
+          <strong>June 10, 2026</strong>
+        </div>
+        <div class="summary-card">
+          <span>Best for</span>
+          <strong>Residents, drivers, and nearby businesses</strong>
+        </div>
+      </div>
     </div>
   </header>
 
-  <main>
-    <div class="notice">
-      <strong>Draft content notice</strong>
-      This page is ready for public formatting, but the FAQ answers below should be reviewed and replaced with the final approved bulletin text before publishing.
-    </div>
+  <main class="page-wrap">
+    <div class="content-grid">
+      <div class="stack">
+        <section class="section" id="updates" aria-labelledby="updates-heading">
+          <div class="section-title">
+            <div>
+              <h2 id="updates-heading">Recent Updates</h2>
+              <p>The newest items are listed first so mobile readers can get caught up fast.</p>
+            </div>
+            <span class="date-pill">Latest: June 10</span>
+          </div>
 
-    <div class="grid">
-      <section aria-labelledby="faq-heading">
-        <h2 id="faq-heading">Frequently Asked Questions</h2>
+          <ul class="update-list">
+            <li class="update-item">
+              <div class="update-date">June 10, 2026</div>
+              <div>
+                <h3>Bulletin layout refreshed for mobile readers</h3>
+                <p>The page now opens with the project status, recent updates, and contact options instead of a long FAQ list.</p>
+              </div>
+            </li>
+            <li class="update-item">
+              <div class="update-date">June 9, 2026</div>
+              <div>
+                <h3>Public project page published</h3>
+                <p>The Falcon Way Improvements bulletin was published as a GitHub Pages site for simple public access.</p>
+              </div>
+            </li>
+            <li class="update-item">
+              <div class="update-date">Pending</div>
+              <div>
+                <h3>Schedule and contact details to be added</h3>
+                <p>Approved construction timing, field contact information, and access notes should be added here once confirmed.</p>
+              </div>
+            </li>
+          </ul>
+        </section>
 
-        <article class="faq-item">
-          <h3>What is being improved on Falcon Way?</h3>
-          <p>Falcon Way improvement work is expected to focus on roadway condition, access, safety, drainage, signage, and related neighborhood impacts. Replace this paragraph with the approved project description.</p>
-        </article>
+        <section class="section flush" aria-labelledby="overview-heading">
+          <div class="section-title">
+            <div>
+              <h2 id="overview-heading">What This Page Is For</h2>
+              <p>Short, practical information for people affected by or interested in the project.</p>
+            </div>
+          </div>
 
-        <article class="faq-item">
-          <h3>Why is the work needed?</h3>
-          <p>The improvements are intended to address known transportation and public access concerns while keeping residents and local businesses informed throughout the process.</p>
-        </article>
+          <ul class="info-list">
+            <li class="info-row">
+              <h3>Project information</h3>
+              <p>Use this page for current public updates about Falcon Way Improvements, including schedule notes, access impacts, and work area reminders.</p>
+            </li>
+            <li class="info-row">
+              <h3>Road and access notes</h3>
+              <p>When closures, detours, driveway impacts, or work-hour changes are approved, they should be posted here in plain language.</p>
+            </li>
+            <li class="info-row">
+              <h3>Questions and concerns</h3>
+              <p>Residents, nearby businesses, and road users should use the contact section below for project questions or urgent access concerns.</p>
+            </li>
+          </ul>
+        </section>
 
-        <article class="faq-item">
-          <h3>When will construction or field work happen?</h3>
-          <p>Schedule details should be added here once dates, phases, and working hours are approved. Include any expected start dates, completion targets, and weather-dependent conditions.</p>
-        </article>
+        <section class="section" aria-labelledby="expect-heading">
+          <div class="section-title">
+            <div>
+              <h2 id="expect-heading">What To Expect</h2>
+              <p>This is the recommended structure for upcoming project updates.</p>
+            </div>
+          </div>
 
-        <article class="faq-item">
-          <h3>Will roads, driveways, or sidewalks be closed?</h3>
-          <p>Access information should be updated as each phase is confirmed. If closures are expected, list the affected limits, timing, detours, and contact path for access concerns.</p>
-        </article>
+          <ol class="timeline">
+            <li>
+              <h3>Before field work</h3>
+              <p>Post approved work dates, expected hours, and any advance notices for nearby properties.</p>
+            </li>
+            <li>
+              <h3>During active work</h3>
+              <p>Keep this page current with traffic control notes, access changes, and who to call for time-sensitive concerns.</p>
+            </li>
+            <li>
+              <h3>After each major update</h3>
+              <p>Add a dated note to the Recent Updates section so readers can quickly see what changed.</p>
+            </li>
+          </ol>
+        </section>
+      </div>
 
-        <article class="faq-item">
-          <h3>How will emergency access be handled?</h3>
-          <p>Emergency access plans should be confirmed with the responsible public agency or project team. Add the approved access statement here before public release.</p>
-        </article>
+      <aside class="stack" id="contact" aria-labelledby="contact-heading">
+        <section class="section">
+          <div class="section-title">
+            <div>
+              <h2 id="contact-heading">Who To Contact</h2>
+              <p>Add approved phone and email details before distributing this page widely.</p>
+            </div>
+          </div>
 
-        <article class="faq-item">
-          <h3>How can people submit questions?</h3>
-          <p>Questions can be routed through the contact listed on this bulletin. Replace the placeholder contact details with the approved email, phone number, or web form.</p>
-        </article>
-      </section>
+          <div class="contact-stack">
+            <div class="contact-card">
+              <h3>General project questions</h3>
+              <p>Use this contact for schedule questions, project limits, public notices, and general information.</p>
+              <span class="contact-link placeholder">Project email: to be added</span>
+              <span class="contact-link placeholder">Project phone: to be added</span>
+            </div>
 
-      <aside aria-labelledby="status-heading">
-        <h2 id="status-heading">At a Glance</h2>
-        <ul class="status-list">
-          <li>
-            <strong>Status</strong>
-            Public FAQ draft prepared for review.
-          </li>
-          <li>
-            <strong>Current focus</strong>
-            Confirm approved FAQ text, contacts, schedule notes, and publishing owner.
-          </li>
-          <li>
-            <strong>Audience</strong>
-            Residents, local businesses, commuters, emergency services, and visitors.
-          </li>
-        </ul>
+            <div class="contact-card urgent">
+              <h3>Urgent access concern</h3>
+              <p>Use this path for driveway access, business access, delivery coordination, or time-sensitive field concerns.</p>
+              <span class="contact-link placeholder">Field contact: to be added</span>
+            </div>
 
-        <h2>Contact</h2>
-        <ul class="contact-list">
-          <li>
-            <strong>Project questions</strong>
-            <span class="small">Add approved contact name, email, and phone.</span>
-          </li>
-          <li>
-            <strong>Urgent access issue</strong>
-            <span class="small">Add approved after-hours or field contact if applicable.</span>
-          </li>
-        </ul>
+            <div class="contact-card">
+              <h3>After-hours issue</h3>
+              <p>If after-hours contact is available for this project, list it here with the hours it is monitored.</p>
+              <span class="contact-link placeholder">After-hours contact: to be added</span>
+            </div>
+          </div>
+        </section>
+
+        <div class="note" role="note">
+          <strong>Public content check</strong>
+          Keep this page limited to approved public information. Do not post private project files, internal notes, or personal contact details without approval.
+        </div>
       </aside>
     </div>
   </main>
 
+  <div class="sticky-contact" aria-label="Mobile shortcuts">
+    <div class="sticky-contact-inner">
+      <a href="#updates">Updates</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+
   <footer>
-    <p>This bulletin is a public information page. Replace draft text with approved project language before enabling a public GitHub Pages URL.</p>
+    <p>Falcon Way Improvements bulletin. Last updated June 10, 2026.</p>
   </footer>
 </body>
 </html>
