@@ -546,12 +546,13 @@
       const GITHUB_BRANCH = "main";
       const PIN_HASH = "8a6c6eaff6c1a4472ab71214fbcb817477c854435fbf502a7e3d3eb989dee693";
       const HEADERS = ["section", "order", "label", "date", "heading", "body", "button_label", "button_url", "visible"];
-      const SECTION_ORDER = ["hero", "meta", "status", "update", "overview", "expect", "contact", "note"];
+      const SECTION_ORDER = ["hero", "meta", "status", "update", "traffic", "overview", "expect", "contact", "note"];
       const SECTION_COPY = {
         hero: ["Page Title", "Headline and intro text at the top of the public page."],
         meta: ["Last Updated", "Controls the footer date."],
         status: ["Status Cards", "Small cards near the top of the public page."],
         update: ["Recent Updates", "Newest project updates for mobile readers."],
+        traffic: ["Traffic Impacts", "Current and next traffic-control notes with timelines."],
         overview: ["What This Page Is For", "Short project information cards."],
         expect: ["What To Expect", "Simple steps or expectations for the project."],
         contact: ["Who To Contact", "Contact cards and buttons."],
@@ -667,7 +668,7 @@
           ...DEFAULT_ROW,
           section,
           order: nextOrder(section),
-          heading: section === "update" ? "New update headline" : "New item",
+          heading: section === "update" ? "New update headline" : section === "traffic" ? "New traffic impact" : "New item",
           body: "Add approved public text here."
         });
         renderAll(`Added a new ${SECTION_COPY[section][0]} row.`);
@@ -808,6 +809,7 @@
         preview.replaceChildren(
           renderPreviewSection("Status cards", sectionRows("status", true)),
           renderPreviewSection("Recent updates", sectionRows("update", true)),
+          renderPreviewSection("Traffic impacts", sectionRows("traffic", true)),
           renderPreviewSection("Contacts", sectionRows("contact", true))
         );
       }

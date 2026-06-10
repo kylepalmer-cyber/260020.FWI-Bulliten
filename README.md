@@ -31,10 +31,10 @@ If direct publishing fails, use the fallback buttons:
 
 Columns:
 
-- `section`: use `hero`, `meta`, `status`, `update`, `overview`, `expect`, `contact`, or `note`
+- `section`: use `hero`, `meta`, `status`, `update`, `traffic`, `overview`, `expect`, `contact`, or `note`
 - `order`: display order within that section
 - `label`: small label text, or `urgent` for an urgent contact card
-- `date`: date shown for update rows
+- `date`: date shown for update rows, or timeline shown for traffic rows
 - `heading`: headline or card title
 - `body`: paragraph text
 - `button_label`: contact button or link label

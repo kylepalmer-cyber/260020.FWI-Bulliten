@@ -207,7 +207,7 @@
       white-space: nowrap;
     }
 
-    .update-list, .info-list, .timeline {
+    .update-list, .info-list, .timeline, .traffic-list {
       display: grid;
       gap: 12px;
       margin: 0;
@@ -242,9 +242,53 @@
       line-height: 1.26;
     }
 
-    .update-item p, .info-row p, .timeline p, .contact-card p, .note p {
+    .update-item p, .info-row p, .timeline p, .traffic-card p, .contact-card p, .note p {
       margin-bottom: 0;
       color: var(--muted);
+    }
+
+    .traffic-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .traffic-card {
+      padding: 16px;
+      background: #f7faf9;
+      border: 1px solid var(--line);
+      border-top: 5px solid var(--teal);
+      border-radius: 8px;
+    }
+
+    .traffic-card.next {
+      border-top-color: var(--gold);
+    }
+
+    .traffic-tag {
+      display: inline-flex;
+      margin-bottom: 10px;
+      padding: 5px 8px;
+      color: var(--teal-dark);
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .traffic-card h3 {
+      margin-bottom: 6px;
+      color: var(--teal-dark);
+      font-size: 1.05rem;
+      line-height: 1.25;
+    }
+
+    .traffic-time {
+      display: block;
+      margin-top: 12px;
+      color: var(--green);
+      font-size: 0.92rem;
+      font-weight: 700;
     }
 
     .info-row {
@@ -386,7 +430,7 @@
     }
 
     @media (max-width: 860px) {
-      .summary-grid, .content-grid { grid-template-columns: 1fr; }
+      .summary-grid, .content-grid, .traffic-list { grid-template-columns: 1fr; }
       .hero-inner { padding-top: 24px; }
     }
 
@@ -412,6 +456,7 @@
       <p class="lede" data-content="hero-body">A quick public update page for people checking the project from a phone. Find the latest status, what to expect near the work area, and where to send questions.</p>
       <div class="hero-actions" aria-label="Page shortcuts">
         <a class="button primary" href="#updates">Recent updates</a>
+        <a class="button" href="#traffic">Traffic impacts</a>
         <a class="button" href="#contact">Who to contact</a>
       </div>
       <div class="summary-grid" id="status-list" aria-label="Project summary">
@@ -437,6 +482,19 @@
             <li class="update-item"><div class="update-date">June 10, 2026</div><div><h3>Bulletin layout refreshed for mobile readers</h3><p>The page now opens with the project status, recent updates, and contact options instead of a long FAQ list.</p></div></li>
             <li class="update-item"><div class="update-date">June 9, 2026</div><div><h3>Public project page published</h3><p>The Falcon Way Improvements bulletin was published as a GitHub Pages site for simple public access.</p></div></li>
             <li class="update-item"><div class="update-date">Pending</div><div><h3>Schedule and contact details to be added</h3><p>Approved construction timing, field contact information, and access notes should be added here once confirmed.</p></div></li>
+          </ul>
+        </section>
+
+        <section class="section" id="traffic" aria-labelledby="traffic-heading">
+          <div class="section-title">
+            <div>
+              <h2 id="traffic-heading">Traffic Impacts</h2>
+              <p>Current and next traffic-control notes will be posted here when approved.</p>
+            </div>
+          </div>
+          <ul class="traffic-list" id="traffic-list">
+            <li class="traffic-card"><span class="traffic-tag">Current</span><h3>Current traffic implementation</h3><p>No active traffic implementation has been posted to this bulletin yet.</p><span class="traffic-time">Timeline: To be confirmed</span></li>
+            <li class="traffic-card next"><span class="traffic-tag">Next</span><h3>Next traffic implementation</h3><p>The next planned traffic setup will be added once timing and traffic-control details are approved.</p><span class="traffic-time">Timeline: To be confirmed</span></li>
           </ul>
         </section>
 
@@ -494,6 +552,7 @@
   <div class="sticky-contact" aria-label="Mobile shortcuts">
     <div class="sticky-contact-inner">
       <a href="#updates">Updates</a>
+      <a href="#traffic">Traffic</a>
       <a href="#contact">Contact</a>
     </div>
   </div>
@@ -597,6 +656,19 @@
         }));
       }
 
+      function renderTraffic(records) {
+        replaceChildren("#traffic-list", rowsFor(records, "traffic").map((row) => {
+          const card = make("li", clean(row.label).toLowerCase().includes("next") ? "traffic-card next" : "traffic-card");
+          card.append(
+            make("span", "traffic-tag", row.label || "Traffic"),
+            make("h3", "", row.heading),
+            make("p", "", row.body)
+          );
+          if (row.date) card.append(make("span", "traffic-time", `Timeline: ${row.date}`));
+          return card;
+        }));
+      }
+
       function renderSimpleList(records, section, selector, itemClass) {
         replaceChildren(selector, rowsFor(records, section).map((row) => {
           const item = make("li", itemClass);
@@ -651,6 +723,7 @@
           renderMeta(records);
           renderStatus(records);
           renderUpdates(records);
+          renderTraffic(records);
           renderSimpleList(records, "overview", "#overview-list", "info-row");
           renderSimpleList(records, "expect", "#timeline-list", "");
           renderContacts(records);
