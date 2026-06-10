@@ -384,8 +384,8 @@
       font-weight: 700;
     }
 
-    body.locked main {
-      display: none;
+    [hidden] {
+      display: none !important;
     }
 
     @media (max-width: 920px) {
@@ -452,7 +452,7 @@
     </form>
   </section>
 
-  <main class="wrap">
+  <main class="wrap" id="editor-main" hidden aria-hidden="true">
     <div class="stack">
       <section class="panel">
         <h2>How Publishing Works</h2>
@@ -543,6 +543,7 @@
       const output = document.querySelector("#csv-output");
       const status = document.querySelector("#status-message");
       const lockScreen = document.querySelector("#lock-screen");
+      const editorMain = document.querySelector("#editor-main");
       const pinForm = document.querySelector("#pin-form");
       const pinInput = document.querySelector("#pin-input");
       const pinError = document.querySelector("#pin-error");
@@ -804,10 +805,15 @@
         return Array.from(new Uint8Array(hash)).map((byte) => byte.toString(16).padStart(2, "0")).join("");
       }
 
-      function unlockEditor() {
+      async function unlockEditor(options = {}) {
         document.body.classList.remove("locked");
         lockScreen.hidden = true;
-        if (!records.length) loadContent();
+        editorMain.hidden = false;
+        editorMain.setAttribute("aria-hidden", "false");
+        if (!records.length) await loadContent();
+        if (options.scroll) {
+          document.querySelector("#editor-root").scrollIntoView({ behavior: "smooth", block: "start" });
+        }
       }
 
       async function checkPin(event) {
@@ -818,7 +824,7 @@
         const attemptHash = await sha256(attempt);
         if (attemptHash === PIN_HASH) {
           sessionStorage.setItem(PIN_SESSION_KEY, "yes");
-          unlockEditor();
+          unlockEditor({ scroll: true });
         } else {
           pinInput.value = "";
           pinInput.focus();
