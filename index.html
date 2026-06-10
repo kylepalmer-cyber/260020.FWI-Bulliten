@@ -7,12 +7,11 @@
   <meta name="description" content="Mobile-friendly public bulletin for Falcon Way Improvements project updates, contact information, and what to expect.">
   <style>
     :root {
-      color-scheme: light;
       --ink: #20252b;
       --muted: #59636f;
       --soft: #eef3f2;
       --paper: #faf8f2;
-      --panel: #ffffff;
+      --panel: #fff;
       --line: #d8dedc;
       --teal: #1e6266;
       --teal-dark: #123f43;
@@ -22,26 +21,20 @@
       --shadow: 0 18px 45px rgba(18, 63, 67, 0.12);
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
+      padding-bottom: 76px;
       color: var(--ink);
       background: var(--paper);
       font-family: Arial, Helvetica, sans-serif;
       line-height: 1.55;
-      padding-bottom: 76px;
     }
 
-    a {
-      color: inherit;
-    }
+    a { color: inherit; }
+    h1, h2, h3, p { margin-top: 0; }
 
     .page-wrap {
       width: min(1080px, calc(100% - 32px));
@@ -78,18 +71,11 @@
 
     .eyebrow {
       margin: 0 0 10px;
+      color: #f2d789;
       font-size: 0.78rem;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: #f2d789;
-    }
-
-    h1,
-    h2,
-    h3,
-    p {
-      margin-top: 0;
     }
 
     h1 {
@@ -165,9 +151,7 @@
       line-height: 1.25;
     }
 
-    main {
-      padding: 28px 0 46px;
-    }
+    main { padding: 28px 0 46px; }
 
     .content-grid {
       display: grid;
@@ -189,9 +173,7 @@
       box-shadow: var(--shadow);
     }
 
-    .section.flush {
-      box-shadow: none;
-    }
+    .section.flush { box-shadow: none; }
 
     .section-title {
       display: flex;
@@ -225,7 +207,7 @@
       white-space: nowrap;
     }
 
-    .update-list {
+    .update-list, .info-list, .timeline {
       display: grid;
       gap: 12px;
       margin: 0;
@@ -253,27 +235,16 @@
       line-height: 1.25;
     }
 
-    .update-item h3 {
+    .update-item h3, .info-row h3, .timeline h3 {
       margin-bottom: 5px;
-      font-size: 1.04rem;
-      line-height: 1.26;
       color: var(--teal-dark);
+      font-size: 1rem;
+      line-height: 1.26;
     }
 
-    .update-item p,
-    .info-row p,
-    .contact-card p,
-    .note p {
+    .update-item p, .info-row p, .timeline p, .contact-card p, .note p {
       margin-bottom: 0;
       color: var(--muted);
-    }
-
-    .info-list {
-      display: grid;
-      gap: 12px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
     }
 
     .info-row {
@@ -284,25 +255,12 @@
       border-radius: 6px;
     }
 
-    .info-row h3 {
-      margin-bottom: 5px;
-      color: var(--teal-dark);
-      font-size: 1rem;
-    }
-
-    .timeline {
-      display: grid;
-      gap: 12px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      counter-reset: step;
-    }
+    .timeline { counter-reset: step; }
 
     .timeline li {
       position: relative;
-      padding-left: 42px;
       min-height: 34px;
+      padding-left: 42px;
     }
 
     .timeline li::before {
@@ -322,17 +280,6 @@
       font-weight: 700;
     }
 
-    .timeline h3 {
-      margin-bottom: 3px;
-      font-size: 1rem;
-      color: var(--teal-dark);
-    }
-
-    .timeline p {
-      margin-bottom: 0;
-      color: var(--muted);
-    }
-
     .contact-stack {
       display: grid;
       gap: 14px;
@@ -345,9 +292,7 @@
       border-radius: 8px;
     }
 
-    .contact-card.urgent {
-      border-left: 5px solid var(--red);
-    }
+    .contact-card.urgent { border-left: 5px solid var(--red); }
 
     .contact-card h3 {
       margin-bottom: 6px;
@@ -441,86 +386,38 @@
     }
 
     @media (max-width: 860px) {
-      .summary-grid,
-      .content-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .hero-inner {
-        padding-top: 24px;
-      }
+      .summary-grid, .content-grid { grid-template-columns: 1fr; }
+      .hero-inner { padding-top: 24px; }
     }
 
     @media (max-width: 560px) {
-      body {
-        padding-bottom: 86px;
-      }
-
-      .page-wrap {
-        width: min(100% - 24px, 1080px);
-      }
-
-      .hero-actions {
-        display: grid;
-        grid-template-columns: 1fr;
-      }
-
-      .summary-grid {
-        gap: 10px;
-      }
-
-      .section {
-        padding: 18px;
-        border-radius: 6px;
-      }
-
-      .section-title {
-        display: block;
-      }
-
-      .date-pill {
-        display: inline-block;
-        margin-top: 12px;
-      }
-
-      .update-item {
-        grid-template-columns: 1fr;
-        gap: 4px;
-      }
-
-      .update-date {
-        font-size: 0.82rem;
-      }
-
-      .sticky-contact-inner {
-        gap: 8px;
-      }
+      body { padding-bottom: 86px; }
+      .page-wrap { width: min(100% - 24px, 1080px); }
+      .hero-actions { display: grid; grid-template-columns: 1fr; }
+      .summary-grid { gap: 10px; }
+      .section { padding: 18px; border-radius: 6px; }
+      .section-title { display: block; }
+      .date-pill { display: inline-block; margin-top: 12px; }
+      .update-item { grid-template-columns: 1fr; gap: 4px; }
+      .update-date { font-size: 0.82rem; }
+      .sticky-contact-inner { gap: 8px; }
     }
   </style>
 </head>
 <body>
   <header class="hero">
     <div class="page-wrap hero-inner">
-      <p class="eyebrow">Project bulletin</p>
-      <h1>Falcon Way Improvements</h1>
-      <p class="lede">A quick public update page for people checking the project from a phone. Find the latest status, what to expect near the work area, and where to send questions.</p>
+      <p class="eyebrow" data-content="hero-label">Project bulletin</p>
+      <h1 data-content="hero-title">Falcon Way Improvements</h1>
+      <p class="lede" data-content="hero-body">A quick public update page for people checking the project from a phone. Find the latest status, what to expect near the work area, and where to send questions.</p>
       <div class="hero-actions" aria-label="Page shortcuts">
         <a class="button primary" href="#updates">Recent updates</a>
         <a class="button" href="#contact">Who to contact</a>
       </div>
-      <div class="summary-grid" aria-label="Project summary">
-        <div class="summary-card">
-          <span>Status</span>
-          <strong>Public information page is live</strong>
-        </div>
-        <div class="summary-card">
-          <span>Updated</span>
-          <strong>June 10, 2026</strong>
-        </div>
-        <div class="summary-card">
-          <span>Best for</span>
-          <strong>Residents, drivers, and nearby businesses</strong>
-        </div>
+      <div class="summary-grid" id="status-list" aria-label="Project summary">
+        <div class="summary-card"><span>Status</span><strong>Public information page is live</strong></div>
+        <div class="summary-card"><span>Updated</span><strong>June 10, 2026</strong></div>
+        <div class="summary-card"><span>Best for</span><strong>Residents, drivers, and nearby businesses</strong></div>
       </div>
     </div>
   </header>
@@ -536,29 +433,10 @@
             </div>
             <span class="date-pill">Latest: June 10</span>
           </div>
-
-          <ul class="update-list">
-            <li class="update-item">
-              <div class="update-date">June 10, 2026</div>
-              <div>
-                <h3>Bulletin layout refreshed for mobile readers</h3>
-                <p>The page now opens with the project status, recent updates, and contact options instead of a long FAQ list.</p>
-              </div>
-            </li>
-            <li class="update-item">
-              <div class="update-date">June 9, 2026</div>
-              <div>
-                <h3>Public project page published</h3>
-                <p>The Falcon Way Improvements bulletin was published as a GitHub Pages site for simple public access.</p>
-              </div>
-            </li>
-            <li class="update-item">
-              <div class="update-date">Pending</div>
-              <div>
-                <h3>Schedule and contact details to be added</h3>
-                <p>Approved construction timing, field contact information, and access notes should be added here once confirmed.</p>
-              </div>
-            </li>
+          <ul class="update-list" id="updates-list">
+            <li class="update-item"><div class="update-date">June 10, 2026</div><div><h3>Bulletin layout refreshed for mobile readers</h3><p>The page now opens with the project status, recent updates, and contact options instead of a long FAQ list.</p></div></li>
+            <li class="update-item"><div class="update-date">June 9, 2026</div><div><h3>Public project page published</h3><p>The Falcon Way Improvements bulletin was published as a GitHub Pages site for simple public access.</p></div></li>
+            <li class="update-item"><div class="update-date">Pending</div><div><h3>Schedule and contact details to be added</h3><p>Approved construction timing, field contact information, and access notes should be added here once confirmed.</p></div></li>
           </ul>
         </section>
 
@@ -569,20 +447,10 @@
               <p>Short, practical information for people affected by or interested in the project.</p>
             </div>
           </div>
-
-          <ul class="info-list">
-            <li class="info-row">
-              <h3>Project information</h3>
-              <p>Use this page for current public updates about Falcon Way Improvements, including schedule notes, access impacts, and work area reminders.</p>
-            </li>
-            <li class="info-row">
-              <h3>Road and access notes</h3>
-              <p>When closures, detours, driveway impacts, or work-hour changes are approved, they should be posted here in plain language.</p>
-            </li>
-            <li class="info-row">
-              <h3>Questions and concerns</h3>
-              <p>Residents, nearby businesses, and road users should use the contact section below for project questions or urgent access concerns.</p>
-            </li>
+          <ul class="info-list" id="overview-list">
+            <li class="info-row"><h3>Project information</h3><p>Use this page for current public updates about Falcon Way Improvements, including schedule notes, access impacts, and work area reminders.</p></li>
+            <li class="info-row"><h3>Road and access notes</h3><p>When closures, detours, driveway impacts, or work-hour changes are approved, they should be posted here in plain language.</p></li>
+            <li class="info-row"><h3>Questions and concerns</h3><p>Residents, nearby businesses, and road users should use the contact section below for project questions or urgent access concerns.</p></li>
           </ul>
         </section>
 
@@ -593,20 +461,10 @@
               <p>This is the recommended structure for upcoming project updates.</p>
             </div>
           </div>
-
-          <ol class="timeline">
-            <li>
-              <h3>Before field work</h3>
-              <p>Post approved work dates, expected hours, and any advance notices for nearby properties.</p>
-            </li>
-            <li>
-              <h3>During active work</h3>
-              <p>Keep this page current with traffic control notes, access changes, and who to call for time-sensitive concerns.</p>
-            </li>
-            <li>
-              <h3>After each major update</h3>
-              <p>Add a dated note to the Recent Updates section so readers can quickly see what changed.</p>
-            </li>
+          <ol class="timeline" id="timeline-list">
+            <li><h3>Before field work</h3><p>Post approved work dates, expected hours, and any advance notices for nearby properties.</p></li>
+            <li><h3>During active work</h3><p>Keep this page current with traffic control notes, access changes, and who to call for time-sensitive concerns.</p></li>
+            <li><h3>After each major update</h3><p>Add a dated note to the Recent Updates section so readers can quickly see what changed.</p></li>
           </ol>
         </section>
       </div>
@@ -619,32 +477,15 @@
               <p>Add approved phone and email details before distributing this page widely.</p>
             </div>
           </div>
-
-          <div class="contact-stack">
-            <div class="contact-card">
-              <h3>General project questions</h3>
-              <p>Use this contact for schedule questions, project limits, public notices, and general information.</p>
-              <span class="contact-link placeholder">Project email: to be added</span>
-              <span class="contact-link placeholder">Project phone: to be added</span>
-            </div>
-
-            <div class="contact-card urgent">
-              <h3>Urgent access concern</h3>
-              <p>Use this path for driveway access, business access, delivery coordination, or time-sensitive field concerns.</p>
-              <span class="contact-link placeholder">Field contact: to be added</span>
-            </div>
-
-            <div class="contact-card">
-              <h3>After-hours issue</h3>
-              <p>If after-hours contact is available for this project, list it here with the hours it is monitored.</p>
-              <span class="contact-link placeholder">After-hours contact: to be added</span>
-            </div>
+          <div class="contact-stack" id="contact-list">
+            <div class="contact-card"><h3>General project questions</h3><p>Use this contact for schedule questions, project limits, public notices, and general information.</p><span class="contact-link placeholder">Project email: to be added</span><span class="contact-link placeholder">Project phone: to be added</span></div>
+            <div class="contact-card urgent"><h3>Urgent access concern</h3><p>Use this path for driveway access, business access, delivery coordination, or time-sensitive field concerns.</p><span class="contact-link placeholder">Field contact: to be added</span></div>
+            <div class="contact-card"><h3>After-hours issue</h3><p>If after-hours contact is available for this project, list it here with the hours it is monitored.</p><span class="contact-link placeholder">After-hours contact: to be added</span></div>
           </div>
         </section>
-
-        <div class="note" role="note">
+        <div class="note" id="public-note" role="note">
           <strong>Public content check</strong>
-          Keep this page limited to approved public information. Do not post private project files, internal notes, or personal contact details without approval.
+          <p>Keep this page limited to approved public information. Do not post private project files, internal notes, or personal contact details without approval.</p>
         </div>
       </aside>
     </div>
@@ -658,7 +499,168 @@
   </div>
 
   <footer>
-    <p>Falcon Way Improvements bulletin. Last updated June 10, 2026.</p>
+    <p data-content="footer">Falcon Way Improvements bulletin. Last updated June 10, 2026.</p>
   </footer>
+
+  <script>
+    (() => {
+      const CONTENT_URL = "content.csv";
+      const clean = (value) => String(value || "").trim();
+      const isVisible = (row) => !["no", "false", "0", "hide"].includes(clean(row.visible).toLowerCase());
+      const byOrder = (rows) => rows.sort((a, b) => (Number(a.order) || 999) - (Number(b.order) || 999));
+
+      function parseCsv(input) {
+        const rows = [];
+        let row = [];
+        let value = "";
+        let quoted = false;
+        for (let i = 0; i < input.length; i += 1) {
+          const char = input[i];
+          const next = input[i + 1];
+          if (char === '"' && quoted && next === '"') {
+            value += '"';
+            i += 1;
+          } else if (char === '"') {
+            quoted = !quoted;
+          } else if (char === "," && !quoted) {
+            row.push(value);
+            value = "";
+          } else if ((char === "\n" || char === "\r") && !quoted) {
+            if (char === "\r" && next === "\n") i += 1;
+            row.push(value);
+            if (row.some((cell) => clean(cell))) rows.push(row);
+            row = [];
+            value = "";
+          } else {
+            value += char;
+          }
+        }
+        row.push(value);
+        if (row.some((cell) => clean(cell))) rows.push(row);
+        return rows;
+      }
+
+      function recordsFromCsv(csv) {
+        const rows = parseCsv(csv);
+        const headers = rows.shift().map(clean);
+        return rows.map((row) => Object.fromEntries(headers.map((header, index) => [header, clean(row[index])]))).filter(isVisible);
+      }
+
+      function rowsFor(records, section) {
+        return byOrder(records.filter((row) => clean(row.section).toLowerCase() === section));
+      }
+
+      function make(tag, className, value) {
+        const node = document.createElement(tag);
+        if (className) node.className = className;
+        if (value) node.textContent = value;
+        return node;
+      }
+
+      function replaceChildren(selector, children) {
+        const parent = document.querySelector(selector);
+        if (parent && children.length) parent.replaceChildren(...children);
+      }
+
+      function setText(selector, value) {
+        const node = document.querySelector(selector);
+        if (node && clean(value)) node.textContent = value;
+      }
+
+      function safeUrl(url) {
+        const value = clean(url);
+        if (!value) return "";
+        if (value.startsWith("#") || value.startsWith("mailto:") || value.startsWith("tel:")) return value;
+        try {
+          const parsed = new URL(value);
+          return ["http:", "https:"].includes(parsed.protocol) ? parsed.href : "";
+        } catch {
+          return "";
+        }
+      }
+
+      function renderStatus(records) {
+        replaceChildren("#status-list", rowsFor(records, "status").map((row) => {
+          const card = make("div", "summary-card");
+          card.append(make("span", "", row.label), make("strong", "", row.heading || row.body));
+          return card;
+        }));
+      }
+
+      function renderUpdates(records) {
+        replaceChildren("#updates-list", rowsFor(records, "update").map((row) => {
+          const item = make("li", "update-item");
+          const body = make("div");
+          body.append(make("h3", "", row.heading), make("p", "", row.body));
+          item.append(make("div", "update-date", row.date || row.label), body);
+          return item;
+        }));
+      }
+
+      function renderSimpleList(records, section, selector, itemClass) {
+        replaceChildren(selector, rowsFor(records, section).map((row) => {
+          const item = make("li", itemClass);
+          item.append(make("h3", "", row.heading), make("p", "", row.body));
+          return item;
+        }));
+      }
+
+      function renderContacts(records) {
+        const groups = new Map();
+        rowsFor(records, "contact").forEach((row) => {
+          const key = row.heading || row.label;
+          if (!groups.has(key)) groups.set(key, { label: row.label, heading: key, body: row.body, links: [] });
+          const group = groups.get(key);
+          if (!group.body && row.body) group.body = row.body;
+          if (row.label) group.label = row.label;
+          if (row.button_label || row.button_url) group.links.push({ label: row.button_label, url: row.button_url });
+        });
+        replaceChildren("#contact-list", Array.from(groups.values()).map((group) => {
+          const urgent = group.label.toLowerCase().includes("urgent");
+          const card = make("div", urgent ? "contact-card urgent" : "contact-card");
+          card.append(make("h3", "", group.heading), make("p", "", group.body));
+          group.links.forEach((link) => {
+            const url = safeUrl(link.url);
+            const node = make(url ? "a" : "span", `contact-link${url ? "" : " placeholder"}`, link.label || link.url);
+            if (url) node.href = url;
+            card.append(node);
+          });
+          return card;
+        }));
+      }
+
+      function renderMeta(records) {
+        const hero = rowsFor(records, "hero")[0];
+        const updated = rowsFor(records, "meta").find((row) => row.label.toLowerCase() === "last updated");
+        const note = rowsFor(records, "note")[0];
+        if (hero) {
+          setText("[data-content='hero-label']", hero.label);
+          setText("[data-content='hero-title']", hero.heading);
+          setText("[data-content='hero-body']", hero.body);
+          if (hero.heading) document.title = `${hero.heading} Bulletin`;
+        }
+        if (updated) setText("[data-content='footer']", `Falcon Way Improvements bulletin. Last updated ${updated.heading || updated.body}.`);
+        if (note) document.querySelector("#public-note")?.replaceChildren(make("strong", "", note.heading), make("p", "", note.body));
+      }
+
+      async function loadContent() {
+        try {
+          const response = await fetch(`${CONTENT_URL}?v=${Date.now()}`, { cache: "no-store" });
+          if (!response.ok) throw new Error(`Content load failed: ${response.status}`);
+          const records = recordsFromCsv(await response.text());
+          renderMeta(records);
+          renderStatus(records);
+          renderUpdates(records);
+          renderSimpleList(records, "overview", "#overview-list", "info-row");
+          renderSimpleList(records, "expect", "#timeline-list", "");
+          renderContacts(records);
+        } catch (error) {
+          console.warn("Using built-in bulletin content.", error);
+        }
+      }
+
+      loadContent();
+    })();
+  </script>
 </body>
 </html>
