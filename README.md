@@ -6,6 +6,16 @@ This is a static GitHub Pages bulletin. The layout lives in `index.html`; the ed
 
 Edit `content.csv` as a table. Each visible row becomes part of the public page.
 
+The easiest non-coder path is to use the helper editor:
+
+1. Open `https://kylepalmer-cyber.github.io/260020.FWI-Bulliten/editor.html`.
+2. Edit the rows in the form.
+3. Click `Copy CSV`.
+4. Click `Open GitHub editor`.
+5. Select all text in GitHub's `content.csv` editor, paste the copied CSV, and commit.
+
+The editor page does not save GitHub credentials or publish directly. GitHub's own sign-in and repo permissions control who can commit updates.
+
 Columns:
 
 - `section`: use `hero`, `meta`, `status`, `update`, `overview`, `expect`, `contact`, or `note`
