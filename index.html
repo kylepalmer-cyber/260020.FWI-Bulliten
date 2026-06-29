@@ -4,21 +4,24 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Falcon Way Improvements Bulletin</title>
-  <meta name="description" content="Mobile-friendly public bulletin for Falcon Way Improvements project updates, contact information, and what to expect.">
+  <meta name="description" content="Amrize public bulletin for Falcon Way Improvements project updates, contact information, and what to expect.">
   <style>
     :root {
-      --ink: #20252b;
-      --muted: #59636f;
-      --soft: #eef3f2;
-      --paper: #faf8f2;
+      --ink: #152132;
+      --muted: #506176;
+      --soft: #eef7ff;
+      --paper: #f5f7fa;
       --panel: #fff;
-      --line: #d8dedc;
-      --teal: #1e6266;
-      --teal-dark: #123f43;
-      --gold: #d9a441;
-      --green: #4f7f59;
-      --red: #9b3d32;
-      --shadow: 0 18px 45px rgba(18, 63, 67, 0.12);
+      --line: #d9e3ec;
+      --brand-navy: #031f69;
+      --brand-blue: #0b4c9c;
+      --brand-sky: #eef7ff;
+      --teal: var(--brand-blue);
+      --teal-dark: var(--brand-navy);
+      --gold: #f0b323;
+      --green: #2e7d55;
+      --red: #b23a30;
+      --shadow: 0 18px 42px rgba(3, 31, 105, 0.1);
     }
 
     * { box-sizing: border-box; }
@@ -28,7 +31,9 @@
       margin: 0;
       padding-bottom: 76px;
       color: var(--ink);
-      background: var(--paper);
+      background:
+        linear-gradient(180deg, var(--brand-sky) 0 330px, var(--paper) 330px),
+        var(--paper);
       font-family: Arial, Helvetica, sans-serif;
       line-height: 1.55;
     }
@@ -46,32 +51,89 @@
       overflow: hidden;
       color: #fff;
       background:
-        linear-gradient(135deg, rgba(18, 63, 67, 0.98), rgba(30, 98, 102, 0.9)),
-        repeating-linear-gradient(45deg, transparent 0 18px, rgba(255, 255, 255, 0.08) 18px 20px);
-      border-bottom: 6px solid var(--gold);
+        linear-gradient(135deg, rgba(3, 31, 105, 0.98), rgba(8, 64, 144, 0.92)),
+        repeating-linear-gradient(45deg, transparent 0 22px, rgba(238, 247, 255, 0.08) 22px 24px);
+    }
+
+    .hero::before {
+      position: absolute;
+      inset: 0;
+      content: "";
+      background:
+        linear-gradient(115deg, transparent 0 58%, rgba(238, 247, 255, 0.12) 58% 63%, transparent 63%),
+        linear-gradient(115deg, transparent 0 72%, rgba(240, 179, 35, 0.2) 72% 74%, transparent 74%);
+      pointer-events: none;
     }
 
     .hero::after {
       position: absolute;
-      right: -90px;
-      bottom: -160px;
-      width: 360px;
-      height: 360px;
+      right: 0;
+      bottom: -1px;
+      left: 0;
+      height: 46px;
       content: "";
-      background: rgba(217, 164, 65, 0.16);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 50%;
+      background: linear-gradient(90deg, var(--brand-sky) 0 34%, #fff 34% 69%, var(--gold) 69%);
+      clip-path: polygon(0 58%, 100% 0, 100% 100%, 0 100%);
     }
 
     .hero-inner {
       position: relative;
       z-index: 1;
-      padding: 30px 0 28px;
+      padding: 24px 0 48px;
+    }
+
+    .brand-row {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 34px;
+    }
+
+    .brand-lockup {
+      display: inline-flex;
+      width: clamp(190px, 28vw, 286px);
+      padding: 8px 12px;
+      background: var(--brand-sky);
+      border: 1px solid rgba(238, 247, 255, 0.86);
+      border-radius: 8px;
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.18);
+    }
+
+    .brand-lockup img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .brand-meta {
+      max-width: 310px;
+      padding-top: 4px;
+      color: #dbeaff;
+      font-size: 0.86rem;
+      line-height: 1.3;
+      text-align: right;
+    }
+
+    .brand-meta span {
+      display: block;
+      color: #a9ccff;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .brand-meta strong {
+      display: block;
+      margin-top: 4px;
+      color: #fff;
+      font-size: 1rem;
     }
 
     .eyebrow {
       margin: 0 0 10px;
-      color: #f2d789;
+      color: #bddbff;
       font-size: 0.78rem;
       font-weight: 700;
       letter-spacing: 0.08em;
@@ -82,6 +144,7 @@
       max-width: 760px;
       margin-bottom: 14px;
       font-size: clamp(2.15rem, 9vw, 4.35rem);
+      font-weight: 800;
       line-height: 0.98;
       letter-spacing: 0;
     }
@@ -89,7 +152,7 @@
     .lede {
       max-width: 720px;
       margin-bottom: 20px;
-      color: #e7f0ef;
+      color: #e7efff;
       font-size: 1.08rem;
     }
 
@@ -107,17 +170,17 @@
       justify-content: center;
       padding: 11px 14px;
       color: #fff;
-      background: var(--teal-dark);
-      border: 1px solid rgba(255, 255, 255, 0.24);
+      background: rgba(238, 247, 255, 0.14);
+      border: 1px solid rgba(238, 247, 255, 0.38);
       border-radius: 6px;
       font-weight: 700;
       text-decoration: none;
     }
 
     .button.primary {
-      color: var(--teal-dark);
-      background: #fff;
-      border-color: #fff;
+      color: var(--brand-navy);
+      background: var(--brand-sky);
+      border-color: var(--brand-sky);
     }
 
     .summary-grid {
@@ -129,15 +192,15 @@
 
     .summary-card {
       padding: 14px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(238, 247, 255, 0.94);
+      border: 1px solid rgba(255, 255, 255, 0.72);
       border-radius: 6px;
     }
 
     .summary-card span {
       display: block;
       margin-bottom: 4px;
-      color: #f2d789;
+      color: var(--brand-blue);
       font-size: 0.75rem;
       font-weight: 700;
       letter-spacing: 0.06em;
@@ -146,12 +209,12 @@
 
     .summary-card strong {
       display: block;
-      color: #fff;
+      color: var(--brand-navy);
       font-size: 1.02rem;
       line-height: 1.25;
     }
 
-    main { padding: 28px 0 46px; }
+    main { padding: 32px 0 50px; }
 
     .content-grid {
       display: grid;
@@ -166,7 +229,7 @@
     }
 
     .section {
-      padding: 22px;
+      padding: 24px;
       background: var(--panel);
       border: 1px solid var(--line);
       border-radius: 8px;
@@ -229,7 +292,7 @@
     }
 
     .update-date {
-      color: var(--green);
+      color: var(--brand-blue);
       font-size: 0.88rem;
       font-weight: 700;
       line-height: 1.25;
@@ -253,7 +316,7 @@
 
     .traffic-card {
       padding: 16px;
-      background: #f7faf9;
+      background: #f8fbff;
       border: 1px solid var(--line);
       border-top: 5px solid var(--teal);
       border-radius: 8px;
@@ -293,9 +356,9 @@
 
     .info-row {
       padding: 14px;
-      background: #f7faf9;
+      background: #f8fbff;
       border: 1px solid var(--line);
-      border-left: 5px solid var(--teal);
+      border-left: 5px solid var(--brand-navy);
       border-radius: 6px;
     }
 
@@ -316,7 +379,7 @@
       height: 28px;
       place-items: center;
       color: #fff;
-      background: var(--teal);
+      background: var(--brand-navy);
       border-radius: 50%;
       content: counter(step);
       counter-increment: step;
@@ -348,7 +411,7 @@
       display: block;
       margin-top: 10px;
       padding: 12px;
-      color: var(--teal-dark);
+      color: var(--brand-navy);
       background: var(--soft);
       border: 1px solid var(--line);
       border-radius: 6px;
@@ -384,9 +447,9 @@
       left: 0;
       z-index: 10;
       padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
-      background: rgba(250, 248, 242, 0.96);
+      background: rgba(255, 255, 255, 0.96);
       border-top: 1px solid var(--line);
-      box-shadow: 0 -10px 30px rgba(18, 63, 67, 0.12);
+      box-shadow: 0 -10px 30px rgba(3, 31, 105, 0.12);
       backdrop-filter: blur(10px);
     }
 
@@ -402,7 +465,7 @@
       min-height: 46px;
       padding: 12px;
       color: #fff;
-      background: var(--teal-dark);
+      background: var(--brand-navy);
       border-radius: 6px;
       font-weight: 700;
       text-align: center;
@@ -410,8 +473,8 @@
     }
 
     .sticky-contact a:first-child {
-      color: var(--teal-dark);
-      background: #fff;
+      color: var(--brand-navy);
+      background: var(--brand-sky);
       border: 1px solid var(--line);
     }
 
@@ -432,6 +495,15 @@
     @media (max-width: 860px) {
       .summary-grid, .content-grid, .traffic-list { grid-template-columns: 1fr; }
       .hero-inner { padding-top: 24px; }
+      .brand-row {
+        display: grid;
+        gap: 14px;
+        margin-bottom: 28px;
+      }
+      .brand-meta {
+        max-width: none;
+        text-align: left;
+      }
     }
 
     @media (max-width: 560px) {
@@ -451,6 +523,15 @@
 <body>
   <header class="hero">
     <div class="page-wrap hero-inner">
+      <div class="brand-row">
+        <div class="brand-lockup">
+          <img src="assets/amrize-logo-lockup.jpg" width="736" height="207" alt="Amrize">
+        </div>
+        <div class="brand-meta">
+          <span>Public project bulletin</span>
+          <strong>Amrize field updates for Falcon Way</strong>
+        </div>
+      </div>
       <p class="eyebrow" data-content="hero-label">Project bulletin</p>
       <h1 data-content="hero-title">Falcon Way Improvements</h1>
       <p class="lede" data-content="hero-body">A quick public update page for people checking the project from a phone. Find the latest status, what to expect near the work area, and where to send questions.</p>

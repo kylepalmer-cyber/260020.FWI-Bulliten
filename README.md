@@ -2,6 +2,10 @@
 
 This is a static GitHub Pages bulletin. The layout lives in `index.html`; the editable bulletin content lives in `content.csv`.
 
+## Brand Assets
+
+The public page uses `assets/amrize-logo-lockup.jpg`, cropped from the official Amrize logo image in the Amrize media library. Keep `assets/amrize-logo.jpg` as the source download for future refreshes.
+
 ## Update The Bulletin
 
 Edit `content.csv` as a table. Each visible row becomes part of the public page.
