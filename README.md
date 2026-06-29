@@ -6,6 +6,8 @@ This is a static GitHub Pages bulletin. The layout lives in `index.html`; the ed
 
 The public page uses `assets/amrize-logo-lockup.jpg`, cropped from the official Amrize logo image in the Amrize media library. Keep `assets/amrize-logo.jpg` as the source download for future refreshes.
 
+The hero background uses `assets/falcon-way-hero-roadwork.webp`, a custom generated roadwork banner asset created for this bulletin. Keep it free of embedded text or logos so the live HTML can control accessible page copy and brand placement.
+
 ## Update The Bulletin
 
 Edit `content.csv` as a table. Each visible row becomes part of the public page.
