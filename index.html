@@ -591,9 +591,10 @@
               <h2 id="updates-heading">Recent Updates</h2>
               <p>The newest items are listed first so mobile readers can get caught up fast.</p>
             </div>
-            <span class="date-pill">Latest: June 10</span>
+            <span class="date-pill">Latest: June 23, 2026</span>
           </div>
           <ul class="update-list" id="updates-list">
+            <li class="update-item"><div class="update-date">June 23, 2026</div><div><h3>Pre-locates, Bird Nesting Survey, and survey layout added</h3><p>As of June 23, pre-locates, Bird Nesting Survey, and survey layout are active project activities for Falcon Way Improvements.</p></div></li>
             <li class="update-item"><div class="update-date">June 10, 2026</div><div><h3>Bulletin layout refreshed for mobile readers</h3><p>The page now opens with the project status, recent updates, and contact options instead of a long FAQ list.</p></div></li>
             <li class="update-item"><div class="update-date">June 9, 2026</div><div><h3>Public project page published</h3><p>The Falcon Way Improvements bulletin was published as a GitHub Pages site for simple public access.</p></div></li>
             <li class="update-item"><div class="update-date">Pending</div><div><h3>Schedule and contact details to be added</h3><p>Approved construction timing, field contact information, and access notes should be added here once confirmed.</p></div></li>
@@ -762,7 +763,9 @@
       }
 
       function renderUpdates(records) {
-        replaceChildren("#updates-list", rowsFor(records, "update").map((row) => {
+        const updates = rowsFor(records, "update");
+        if (updates[0]?.date) setText("#updates .date-pill", `Latest: ${updates[0].date}`);
+        replaceChildren("#updates-list", updates.map((row) => {
           const item = make("li", "update-item");
           const body = make("div");
           body.append(make("h3", "", row.heading), make("p", "", row.body));
