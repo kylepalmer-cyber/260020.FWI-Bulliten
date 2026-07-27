@@ -37,6 +37,25 @@
       overflow-x: hidden;
     }
 
+    .preview-notice {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      margin: 0;
+      padding: 12px 20px;
+      border-bottom: 1px solid #e1bd4b;
+      color: #3e2e00;
+      background: #fff3c4;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .preview-notice.error {
+      border-bottom-color: #d99b95;
+      color: #761d15;
+      background: #fff0ee;
+    }
+
     a { color: inherit; }
     h1, h2, h3, p { margin-top: 0; }
 
@@ -680,6 +699,8 @@
   <script>
     (() => {
       const CONTENT_URL = "content.csv";
+      const PREVIEW_READY_MESSAGE = "falcon-way-preview-ready";
+      const PREVIEW_DATA_MESSAGE = "falcon-way-preview-data";
       const clean = (value) => String(value || "").trim();
       const isVisible = (row) => !["no", "false", "0", "hide"].includes(clean(row.visible).toLowerCase());
       const byOrder = (rows) => rows.sort((a, b) => (Number(a.order) || 999) - (Number(b.order) || 999));
@@ -734,12 +755,12 @@
 
       function replaceChildren(selector, children) {
         const parent = document.querySelector(selector);
-        if (parent && children.length) parent.replaceChildren(...children);
+        if (parent) parent.replaceChildren(...children);
       }
 
       function setText(selector, value) {
         const node = document.querySelector(selector);
-        if (node && clean(value)) node.textContent = value;
+        if (node) node.textContent = clean(value);
       }
 
       function safeUrl(url) {
@@ -833,18 +854,83 @@
         if (note) document.querySelector("#public-note")?.replaceChildren(make("strong", "", note.heading), make("p", "", note.body));
       }
 
+      function renderContent(records) {
+        renderMeta(records);
+        renderStatus(records);
+        renderUpdates(records);
+        renderTraffic(records);
+        renderSimpleList(records, "overview", "#overview-list", "info-row");
+        renderSimpleList(records, "expect", "#timeline-list", "");
+        renderContacts(records);
+      }
+
+      function setPreviewNotice(message, type = "") {
+        let notice = document.querySelector("#preview-notice");
+        if (!notice) {
+          notice = make("p", "preview-notice");
+          notice.id = "preview-notice";
+          notice.setAttribute("role", "status");
+          document.body.prepend(notice);
+        }
+        notice.className = type ? `preview-notice ${type}` : "preview-notice";
+        notice.textContent = message;
+      }
+
+      function receivePreviewContent(requestId) {
+        return new Promise((resolve, reject) => {
+          if (!window.opener) {
+            reject(new Error("The preview must be opened from the bulletin editor."));
+            return;
+          }
+
+          const timeout = window.setTimeout(() => {
+            window.removeEventListener("message", handleMessage);
+            reject(new Error("The editor did not send preview content."));
+          }, 5000);
+
+          function handleMessage(event) {
+            if (
+              event.origin !== window.location.origin
+              || event.source !== window.opener
+              || event.data?.type !== PREVIEW_DATA_MESSAGE
+              || event.data?.requestId !== requestId
+            ) {
+              return;
+            }
+
+            window.clearTimeout(timeout);
+            window.removeEventListener("message", handleMessage);
+            resolve(recordsFromCsv(event.data.csv));
+          }
+
+          window.addEventListener("message", handleMessage);
+          window.opener.postMessage({
+            type: PREVIEW_READY_MESSAGE,
+            requestId
+          }, window.location.origin);
+        });
+      }
+
       async function loadContent() {
+        const previewRequestId = new URLSearchParams(window.location.search).get("preview");
+
+        if (previewRequestId) {
+          document.body.classList.add("preview-mode");
+          setPreviewNotice("Draft preview — these changes have not been published.");
+          try {
+            renderContent(await receivePreviewContent(previewRequestId));
+          } catch (error) {
+            setPreviewNotice("Draft preview unavailable. Return to the editor and try again.", "error");
+            console.warn("Could not load draft preview content.", error);
+          }
+          return;
+        }
+
         try {
           const response = await fetch(`${CONTENT_URL}?v=${Date.now()}`, { cache: "no-store" });
           if (!response.ok) throw new Error(`Content load failed: ${response.status}`);
           const records = recordsFromCsv(await response.text());
-          renderMeta(records);
-          renderStatus(records);
-          renderUpdates(records);
-          renderTraffic(records);
-          renderSimpleList(records, "overview", "#overview-list", "info-row");
-          renderSimpleList(records, "expect", "#timeline-list", "");
-          renderContacts(records);
+          renderContent(records);
         } catch (error) {
           console.warn("Using built-in bulletin content.", error);
         }

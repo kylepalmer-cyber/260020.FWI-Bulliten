@@ -480,6 +480,7 @@
         <p>This editor can publish directly when an authorized GitHub token is pasted in. The token is used only for that click and is not saved by this page.</p>
         <ol class="steps">
           <li>Edit the fields below.</li>
+          <li>Preview the current changes in the full bulletin.</li>
           <li>Paste the publish token.</li>
           <li>Click Publish to GitHub.</li>
           <li>Wait briefly for Pages to update.</li>
@@ -494,6 +495,7 @@
           </div>
           <div class="toolbar-actions">
             <button class="secondary" type="button" id="reload-button">Reload current CSV</button>
+            <button class="secondary" type="button" id="preview-button">Preview changes</button>
             <button type="button" id="copy-button">Copy CSV</button>
             <button class="secondary" type="button" id="download-button">Download CSV</button>
           </div>
@@ -545,6 +547,8 @@
       const GITHUB_API_URL = "https://api.github.com/repos/kylepalmer-cyber/260020.FWI-Bulliten/contents/content.csv";
       const GITHUB_BRANCH = "main";
       const PIN_HASH = "8a6c6eaff6c1a4472ab71214fbcb817477c854435fbf502a7e3d3eb989dee693";
+      const PREVIEW_READY_MESSAGE = "falcon-way-preview-ready";
+      const PREVIEW_DATA_MESSAGE = "falcon-way-preview-data";
       const HEADERS = ["section", "order", "label", "date", "heading", "body", "button_label", "button_url", "visible"];
       const SECTION_ORDER = ["hero", "meta", "status", "update", "traffic", "overview", "expect", "contact", "note"];
       const SECTION_COPY = {
@@ -571,12 +575,15 @@
       };
 
       let records = [];
+      let previewWindow = null;
+      let previewRequestId = "";
 
       const clean = (value) => String(value || "").trim();
       const root = document.querySelector("#editor-root");
       const preview = document.querySelector("#preview-root");
       const output = document.querySelector("#csv-output");
       const status = document.querySelector("#status-message");
+      const previewButton = document.querySelector("#preview-button");
       const publishButton = document.querySelector("#publish-button");
       const publishStatus = document.querySelector("#publish-status");
       const githubToken = document.querySelector("#github-token");
@@ -978,11 +985,50 @@
         URL.revokeObjectURL(link.href);
       }
 
+      function openPreview() {
+        if (!records.length) {
+          status.textContent = "Add or load bulletin content before opening a preview.";
+          return;
+        }
+
+        previewRequestId = crypto.randomUUID
+          ? crypto.randomUUID()
+          : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+        previewWindow = window.open(`./?preview=${encodeURIComponent(previewRequestId)}`, "falcon-way-draft-preview");
+
+        if (!previewWindow) {
+          status.textContent = "The preview window was blocked. Allow pop-ups for this page and try again.";
+          return;
+        }
+
+        status.textContent = "Opening a full-page preview of the current changes...";
+      }
+
+      function sendPreviewData(event) {
+        if (
+          event.origin !== window.location.origin
+          || event.source !== previewWindow
+          || event.data?.type !== PREVIEW_READY_MESSAGE
+          || event.data?.requestId !== previewRequestId
+        ) {
+          return;
+        }
+
+        event.source.postMessage({
+          type: PREVIEW_DATA_MESSAGE,
+          requestId: previewRequestId,
+          csv: recordsToCsv(records)
+        }, window.location.origin);
+        status.textContent = "Preview opened with the current unsaved changes.";
+      }
+
       document.querySelector("#reload-button").addEventListener("click", loadContent);
+      previewButton.addEventListener("click", openPreview);
       document.querySelector("#copy-button").addEventListener("click", copyCsv);
       document.querySelector("#download-button").addEventListener("click", downloadCsv);
       publishButton.addEventListener("click", publishToGithub);
       pinForm.addEventListener("submit", checkPin);
+      window.addEventListener("message", sendPreviewData);
       document.querySelector(`a[href='${GITHUB_EDIT_URL}']`)?.addEventListener("click", () => {
         status.textContent = "GitHub editor opened. Paste the generated CSV into content.csv and commit.";
       });

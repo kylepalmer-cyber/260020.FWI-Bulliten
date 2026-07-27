@@ -16,11 +16,12 @@ The easiest non-coder path is to use the helper editor:
 
 1. Open `https://kylepalmer-cyber.github.io/260020.FWI-Bulliten/editor.html`.
 2. Edit the rows in the form.
-3. Paste the GitHub publish token.
-4. Click `Publish to GitHub`.
-5. Wait a minute or two for GitHub Pages to refresh.
+3. Click `Preview changes` to open the full bulletin with the current unsaved edits.
+4. Return to the editor and paste the GitHub publish token.
+5. Click `Publish to GitHub`.
+6. Wait a minute or two for GitHub Pages to refresh.
 
-The editor page does not save the token. It uses the token only when `Publish to GitHub` is clicked.
+Previewing does not require a token and does not publish anything. The editor page does not save the token; it uses the token only when `Publish to GitHub` is clicked.
 
 The token should be a GitHub fine-grained personal access token with these settings:
 
